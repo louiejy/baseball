@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2026 Baseball Trip · Detroit · Cleveland · Pittsburgh</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg:      #0C1821;
+      --surface: #132032;
+      --panel:   #1B2D3F;
+      --green:   #2D7A4F;
+      --red:     #C0392B;
+      --cream:   #F5E6C8;
+      --gold:    #D4A843;
+      --teal:    #20B2AA;
+      --muted:   rgba(245,230,200,0.5);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg);
+      font-family: 'DM Sans', sans-serif;
+      color: var(--cream);
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Baseball stitching SVG pattern */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cpath d='M8 40 Q20 28 40 40 Q60 52 72 40' fill='none' stroke='rgba(245%2C230%2C200%2C0.045)' stroke-width='1.5' stroke-linecap='round'/%3E%3Cpath d='M40 8 Q28 20 40 40 Q52 60 40 72' fill='none' stroke='rgba(245%2C230%2C200%2C0.045)' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-size: 80px 80px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Top glow */
+    body::after {
+      content: '';
+      position: fixed;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 900px;
+      height: 500px;
+      background: radial-gradient(ellipse at center, rgba(45,122,79,0.15) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .barlow { font-family: 'Barlow Condensed', sans-serif; }
+
+    /* ─── Card shell ───────────────────────────────────── */
+    .card {
+      background: var(--surface);
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(245,230,200,0.07);
+      box-shadow:
+        0 4px 24px rgba(0,0,0,0.5),
+        0 1px 0 rgba(245,230,200,0.04) inset;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-teal   { border-left: 4px solid var(--teal); }
+    .card-red    { border-left: 4px solid var(--red); }
+    .card-gold   { border-left: 4px solid var(--gold); }
+
+    /* ─── Card header ──────────────────────────────────── */
+    .card-header {
+      background: var(--panel);
+      padding: 22px 24px 18px;
+      border-bottom: 1px solid rgba(245,230,200,0.07);
+    }
+
+    .option-pill {
+      display: inline-block;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      padding: 3px 10px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    .fire-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      background: rgba(192,57,43,0.25);
+      border: 1px solid rgba(192,57,43,0.45);
+      color: #ff8a78;
+    }
+
+    .rare-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      background: rgba(212,168,67,0.2);
+      border: 1px solid rgba(212,168,67,0.4);
+      color: var(--gold);
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(245,230,200,0.06);
+      border: 1px solid rgba(245,230,200,0.1);
+      border-radius: 4px;
+      padding: 3px 9px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.07em;
+      color: rgba(245,230,200,0.5);
+      text-transform: uppercase;
+    }
+
+    /* ─── Blitz banner ────────────────────────────────── */
+    .blitz-banner {
+      background: linear-gradient(90deg, #a07820 0%, var(--gold) 30%, #f0c840 60%, var(--gold) 80%, #a07820 100%);
+      color: #0a1018;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 13px;
+      letter-spacing: 0.25em;
+      text-align: center;
+      padding: 9px 16px;
+      text-transform: uppercase;
+    }
+
+    /* ─── City rows ───────────────────────────────────── */
+    .city-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 18px 24px;
+    }
+
+    .city-row + .city-row {
+      border-top: 1px solid rgba(45,122,79,0.45);
+    }
+
+    .home-logo {
+      width: 52px;
+      height: 52px;
+      flex-shrink: 0;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));
+    }
+
+    .city-info { flex: 1; min-width: 0; }
+
+    .city-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--cream);
+      line-height: 1.1;
+      letter-spacing: 0.01em;
+    }
+
+    .venue-name {
+      font-size: 12px;
+      color: rgba(245,230,200,0.45);
+      margin-top: 2px;
+      letter-spacing: 0.02em;
+    }
+
+    .date-tag {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      letter-spacing: 0.06em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-top: 7px;
+    }
+
+    .vs-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 5px;
+      flex-wrap: wrap;
+    }
+
+    .vs-label {
+      font-size: 11px;
+      color: rgba(245,230,200,0.4);
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+
+    .opp-logo {
+      width: 22px;
+      height: 22px;
+      object-fit: contain;
+      filter: drop-shadow(0 1px 3px rgba(0,0,0,0.4));
+    }
+
+    .opp-name {
+      font-size: 13px;
+      color: rgba(245,230,200,0.7);
+    }
+
+    .fire-mini {
+      font-size: 10px;
+      padding: 1px 6px;
+      margin-left: 2px;
+    }
+
+    .overlap-note {
+      font-size: 11px;
+      color: rgba(245,230,200,0.4);
+      font-style: italic;
+      margin-top: 5px;
+      line-height: 1.4;
+    }
+
+    /* ─── Header ──────────────────────────────────────── */
+    .page-header {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 72px 24px 52px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .header-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(245,230,200,0.4);
+      margin-bottom: 22px;
+    }
+
+    .header-eyebrow span {
+      width: 16px;
+      height: 1px;
+      background: rgba(245,230,200,0.25);
+      display: inline-block;
+    }
+
+    .page-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(56px, 10vw, 108px);
+      line-height: 0.88;
+      text-transform: uppercase;
+      color: var(--cream);
+      letter-spacing: -0.01em;
+    }
+
+    .title-accent {
+      color: var(--green);
+      -webkit-text-stroke: 0px;
+    }
+
+    .page-subtitle {
+      font-size: 20px;
+      color: rgba(245,230,200,0.85);
+      max-width: 500px;
+      margin: 20px auto 0;
+      line-height: 1.6;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+    }
+
+    /* ─── Scoreboard divider decoration ──────────────── */
+    .scoreboard-rule {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 24px;
+      margin: 0;
+    }
+
+    .scoreboard-rule::before,
+    .scoreboard-rule::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(245,230,200,0.06);
+    }
+
+    /* ─── City dots in header ─────────────────────────── */
+    .city-dots {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 28px;
+    }
+
+    .city-dot {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 100px;
+      border: 1px solid rgba(245,230,200,0.12);
+      color: rgba(245,230,200,0.5);
+    }
+
+    .city-dot-sep {
+      font-size: 10px;
+      color: rgba(245,230,200,0.2);
+    }
+
+    /* ─── Footer ──────────────────────────────────────── */
+    .page-footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 48px 24px 72px;
+      border-top: 1px solid rgba(245,230,200,0.06);
+      margin-top: 16px;
+    }
+
+    /* ─── Grid container ──────────────────────────────── */
+    .cards-grid {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px 48px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    @media (min-width: 1024px) {
+      .cards-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    /* ─── Header fade-up on load ──────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .page-title {
+      animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .city-dots {
+      animation: fadeUp 0.9s 0.15s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .page-subtitle {
+      animation: fadeUp 0.9s 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    /* ─── Scroll reveal ───────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(44px);
+      transition:
+        opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── Card hover lift ─────────────────────────────── */
+    .card {
+      transition:
+        transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.32s ease;
+    }
+
+    .card-teal:hover {
+      transform: translateY(-8px);
+      box-shadow:
+        0 24px 64px rgba(0,0,0,0.65),
+        0 0 0 1px rgba(32,178,170,0.25),
+        0 0 32px rgba(32,178,170,0.08);
+    }
+
+    .card-red:hover {
+      transform: translateY(-8px);
+      box-shadow:
+        0 24px 64px rgba(0,0,0,0.65),
+        0 0 0 1px rgba(192,57,43,0.25),
+        0 0 32px rgba(192,57,43,0.08);
+    }
+
+    .card-gold:hover {
+      transform: translateY(-8px);
+      box-shadow:
+        0 24px 64px rgba(0,0,0,0.65),
+        0 0 0 1px rgba(212,168,67,0.25),
+        0 0 32px rgba(212,168,67,0.08);
+    }
+
+    /* ─── Drive time panel ────────────────────────────── */
+    .drive-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      width: 100%;
+      padding: 11px 24px;
+      background: none;
+      border: none;
+      border-top: 1px solid rgba(245,230,200,0.07);
+      color: rgba(245,230,200,0.38);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: color 0.2s ease, background 0.2s ease;
+      margin-top: auto;
+    }
+
+    .drive-toggle:hover {
+      color: rgba(245,230,200,0.7);
+      background: rgba(245,230,200,0.03);
+    }
+
+    .drive-chevron {
+      display: inline-block;
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      line-height: 1;
+    }
+
+    .drive-toggle.open .drive-chevron {
+      transform: rotate(180deg);
+    }
+
+    .drive-panel {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .drive-panel.open {
+      max-height: 240px;
+    }
+
+    .drive-panel-inner {
+      padding: 14px 24px 18px;
+      border-top: 1px solid rgba(45,122,79,0.3);
+      background: rgba(0,0,0,0.18);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .drive-leg {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .drive-city {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--cream);
+      white-space: nowrap;
+    }
+
+    .drive-line {
+      flex: 1;
+      height: 1px;
+      background: rgba(245,230,200,0.1);
+      position: relative;
+    }
+
+    .drive-meta {
+      text-align: right;
+    }
+
+    .drive-time {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--gold);
+      letter-spacing: 0.04em;
+      display: block;
+    }
+
+    .drive-dist {
+      font-size: 11px;
+      color: rgba(245,230,200,0.3);
+      letter-spacing: 0.03em;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       HEADER
+  ════════════════════════════════════════════════════════════════ -->
+  <header class="page-header">
+    <h1 class="page-title">
+      2026<br>
+      <span class="title-accent">Baseball</span> Trip
+    </h1>
+
+    <div class="city-dots">
+      <span class="city-dot">Detroit</span>
+      <span class="city-dot-sep">◆</span>
+      <span class="city-dot">Cleveland</span>
+      <span class="city-dot-sep">◆</span>
+      <span class="city-dot">Pittsburgh</span>
+    </div>
+
+    <p class="page-subtitle">
+      Three ballparks. Three cities. One epic summer road trip.<br>
+      Pick the weekend that works.
+    </p>
+  </header>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       OPTION CARDS
+  ════════════════════════════════════════════════════════════════ -->
+  <main class="cards-grid">
+
+    <!-- ─────────────────────────────────────────────────────────
+         OPTION 2 · May 26–31 · "The Sweet Spot"
+    ────────────────────────────────────────────────────────────── -->
+    <article class="card card-teal reveal" style="transition-delay: 0.05s;">
+
+      <div class="card-header">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px; margin-bottom:14px; flex-wrap:wrap;">
+          <span class="option-pill" style="background:rgba(32,178,170,0.18); border:1px solid rgba(32,178,170,0.35); color:var(--teal);">Option 1</span>
+        </div>
+
+        <div class="barlow" style="font-size:38px; font-weight:900; line-height:0.95; color:var(--cream); text-transform:uppercase; letter-spacing:-0.01em; margin-bottom:8px;">
+          May 26–31
+        </div>
+        <div style="font-size:14px; color:rgba(245,230,200,0.5); font-style:italic; margin-bottom:14px;">
+          "The Sweet Spot"
+        </div>
+
+        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+          <span class="chip">6 days</span>
+          <span class="chip">3 parks</span>
+        </div>
+      </div>
+
+      <!-- Detroit -->
+      <div class="city-row">
+        <img src="https://www.mlbstatic.com/team-logos/116.svg" alt="Detroit Tigers" class="home-logo">
+        <div class="city-info">
+          <div class="city-name">Detroit Tigers</div>
+          <div class="venue-name">Comerica Park</div>
+          <div class="date-tag">May 26–28</div>
+          <div class="vs-row">
+            <span class="vs-label">vs</span>
+            <img src="https://www.mlbstatic.com/team-logos/108.svg" alt="LA Angels" class="opp-logo">
+            <span class="opp-name">LA Angels</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cleveland -->
+      <div class="city-row">
+        <img src="https://www.mlbstatic.com/team-logos/114.svg" alt="Cleveland Guardians" class="home-logo">
+        <div class="city-info">
+          <div class="city-name">Cleveland Guardians</div>
+          <div class="venue-name">Progressive Field</div>
+          <div class="date-tag">May 29–31</div>
+          <div class="vs-row">
+            <span class="vs-label">vs</span>
+            <img src="https://www.mlbstatic.com/team-logos/111.svg" alt="Boston Red Sox" class="opp-logo">
+            <span class="opp-name">Boston Red Sox</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pittsburgh -->
+      <div class="city-row">
+        <img src="https://www.mlbstatic.com/team-logos/134.svg" alt="Pittsburgh Pirates" class="home-logo">
+        <div class="city-info">
+          <div class="city-name">Pittsburgh Pirates</div>
+          <div class="venue-name">PNC Park</div>
+          <div class="date-tag">May 25–31 home stand</div>
+          <div class="vs-row">
+            <span class="vs-label">vs</span>
+            <img src="https://www.mlbstatic.com/team-logos/112.svg" alt="Chicago Cubs" class="opp-logo">
+            <img src="https://www.mlbstatic.com/team-logos/142.svg" alt="Minnesota Twins" class="opp-logo">
+            <span class="opp-name">Cubs &amp; Twins</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="drive-toggle" onclick="toggleDrive(this)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v3"/><rect x="9" y="11" width="14" height="10" rx="2"/><circle cx="12" cy="21" r="1"/><circle cx="20" cy="21" r="1"/></svg>
+        Drive Times
+        <span class="drive-chevron">▾</span>
+      </button>
+      <div class="drive-panel">
+        <div class="drive-panel-inner">
+          <div class="drive-leg">
+            <span class="drive-city">Detroit</span>
+            <div class="drive-line"></div>
+            <div class="drive-meta">
+              <span class="drive-time">2 hr 40 min</span>
+              <span class="drive-dist">~170 mi</span>
+            </div>
+            <span class="drive-city">Cleveland</span>
+          </div>
+          <div class="drive-leg">
+            <span class="drive-city">Cleveland</span>
+            <div class="drive-line"></div>
+            <div class="drive-meta">
+              <span class="drive-time">2 hr 20 min</span>
+              <span class="drive-dist">~130 mi</span>
+            </div>
+            <span class="drive-city">Pittsburgh</span>
+          </div>
+        </div>
+      </div>
+
+    </article>
+
+
+    <!-- ─────────────────────────────────────────────────────────
+         OPTION 3 · June 8–14 · "Best Matchups"
+    ────────────────────────────────────────────────────────────── -->
+    <article class="card card-red reveal" style="transition-delay: 0.2s;">
+
+      <div class="card-header">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px; margin-bottom:14px; flex-wrap:wrap;">
+          <span class="option-pill" style="background:rgba(192,57,43,0.18); border:1px solid rgba(192,57,43,0.4); color:#ff8a78;">Option 2</span>
+          <span class="fire-pill">🔥 Best Matchups</span>
+        </div>
+
+        <div class="barlow" style="font-size:38px; font-weight:900; line-height:0.95; color:var(--cream); text-transform:uppercase; letter-spacing:-0.01em; margin-bottom:8px;">
+          June 8–14
+        </div>
+        <div style="font-size:14px; color:rgba(245,230,200,0.5); font-style:italic; margin-bottom:14px;">
+          "Best Matchups"
+        </div>
+
+        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+          <span class="chip">7 days</span>
+          <span class="chip">3 parks</span>
+          <span class="chip" style="color:#ff8a78; border-color:rgba(192,57,43,0.25);">Yankees · Dodgers</span>
+        </div>
+      </div>
+
+      <!-- Detroit -->
+      <div class="city-row">
+        <img src="https://www.mlbstatic.com/team-logos/116.svg" alt="Detroit Tigers" class="home-logo">
+        <div class="city-info">
+          <div class="city-name">Detroit Tigers</div>
+          <div class="venue-name">Comerica Park</div>
+          <div class="date-tag">Jun 9–11</div>
+          <div class="vs-row">
+            <span class="vs-label">vs</span>
+            <img src="https://www.mlbstatic.com/team-logos/142.svg" alt="Minnesota Twins" class="opp-logo">
+            <span class="opp-name">Minnesota Twins</span>
+          </div>
+          <div class="overlap-note">Only 2.5 hrs from Cleveland — 1-day overlap possible</div>
+        </div>
+      </div>
+
+      <!-- Cleveland (Yankees matchup) -->
+      <div class="city-row">
+        <img src="https://www.mlbstatic.com/team-logos/114.svg" alt="Cleveland Guardians" class="home-logo">
+        <div class="city-info">
+          <div class="city-name">Cleveland Guardians</div>
+          <div class="venue-name">Progressive Field</div>
+          <div class="date-tag">Jun 8–10</div>
+          <div class="vs-row">
+            <span class="vs-label">vs</span>
+            <img src="https://www.mlbstatic.com/team-logos/147.svg" alt="New York Yankees" class="opp-logo">
+            <span class="opp-name">New York Yankees</span>
+            <span class="fire-pill fire-mini">🔥</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pittsburgh (Dodgers matchup!) -->
+      <div class="city-row">
+        <img src="https://www.mlbstatic.com/team-logos/134.svg" alt="Pittsburgh Pirates" class="home-logo">
+        <div class="city-info">
+          <div class="city-name">Pittsburgh Pirates</div>
+          <div class="venue-name">PNC Park</div>
+          <div class="date-tag">Jun 9–14</div>
+          <div class="vs-row">
+            <span class="vs-label">vs</span>
+            <img src="https://www.mlbstatic.com/team-logos/119.svg" alt="LA Dodgers" class="opp-logo">
+            <img src="https://www.mlbstatic.com/team-logos/146.svg" alt="Miami Marlins" class="opp-logo">
+            <span class="opp-name">Dodgers &amp; Miami</span>
+            <span class="fire-pill fire-mini">🔥</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="drive-toggle" onclick="toggleDrive(this)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v3"/><rect x="9" y="11" width="14" height="10" rx="2"/><circle cx="12" cy="21" r="1"/><circle cx="20" cy="21" r="1"/></svg>
+        Drive Times
+        <span class="drive-chevron">▾</span>
+      </button>
+      <div class="drive-panel">
+        <div class="drive-panel-inner">
+          <div class="drive-leg">
+            <span class="drive-city">Detroit</span>
+            <div class="drive-line"></div>
+            <div class="drive-meta">
+              <span class="drive-time">2 hr 40 min</span>
+              <span class="drive-dist">~170 mi</span>
+            </div>
+            <span class="drive-city">Cleveland</span>
+          </div>
+          <div class="drive-leg">
+            <span class="drive-city">Cleveland</span>
+            <div class="drive-line"></div>
+            <div class="drive-meta">
+              <span class="drive-time">2 hr 20 min</span>
+              <span class="drive-dist">~130 mi</span>
+            </div>
+            <span class="drive-city">Pittsburgh</span>
+          </div>
+        </div>
+      </div>
+
+    </article>
+
+
+    <!-- ─────────────────────────────────────────────────────────
+         OPTION 4 · Aug 14–16 · "The Blitz Weekend"
+    ────────────────────────────────────────────────────────────── -->
+    <article class="card card-gold reveal" style="transition-delay: 0.35s;">
+
+      <div class="blitz-banner">⚡ ALL THREE CITIES · SAME WEEKEND ⚡</div>
+
+      <div class="card-header">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px; margin-bottom:14px; flex-wrap:wrap;">
+          <span class="option-pill" style="background:rgba(212,168,67,0.18); border:1px solid rgba(212,168,67,0.4); color:var(--gold);">Option 3</span>
+          <span class="rare-pill">⭐ Rare Occurrence</span>
+        </div>
+
+        <div class="barlow" style="font-size:38px; font-weight:900; line-height:0.95; color:var(--cream); text-transform:uppercase; letter-spacing:-0.01em; margin-bottom:8px;">
+          Aug 14–16
+        </div>
+        <div style="font-size:14px; color:rgba(245,230,200,0.5); font-style:italic; margin-bottom:14px;">
+          "The Blitz Weekend"
+        </div>
+
+        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+          <span class="chip">3 days</span>
+          <span class="chip">3 parks</span>
+          <span class="chip" style="color:var(--gold); border-color:rgba(212,168,67,0.25);">All home simultaneously</span>
+        </div>
+      </div>
+
+      <!-- Detroit -->
+      <div class="city-row">
+        <img src="https://www.mlbstatic.com/team-logos/116.svg" alt="Detroit Tigers" class="home-logo">
+        <div class="city-info">
+          <div class="city-name">Detroit Tigers</div>
+          <div class="venue-name">Comerica Park</div>
+          <div class="date-tag">Aug 14–15</div>
+          <div class="vs-row">
+            <span class="vs-label">vs</span>
+            <img src="https://www.mlbstatic.com/team-logos/145.svg" alt="Chicago White Sox" class="opp-logo">
+            <span class="opp-name">Chicago White Sox</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cleveland -->
+      <div class="city-row">
+        <img src="https://www.mlbstatic.com/team-logos/114.svg" alt="Cleveland Guardians" class="home-logo">
+        <div class="city-info">
+          <div class="city-name">Cleveland Guardians</div>
+          <div class="venue-name">Progressive Field</div>
+          <div class="date-tag">Aug 14–16</div>
+          <div class="vs-row">
+            <span class="vs-label">vs</span>
+            <img src="https://www.mlbstatic.com/team-logos/135.svg" alt="San Diego Padres" class="opp-logo">
+            <span class="opp-name">San Diego Padres</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pittsburgh -->
+      <div class="city-row">
+        <img src="https://www.mlbstatic.com/team-logos/134.svg" alt="Pittsburgh Pirates" class="home-logo">
+        <div class="city-info">
+          <div class="city-name">Pittsburgh Pirates</div>
+          <div class="venue-name">PNC Park</div>
+          <div class="date-tag">Aug 14–16</div>
+          <div class="vs-row">
+            <span class="vs-label">vs</span>
+            <img src="https://www.mlbstatic.com/team-logos/111.svg" alt="Boston Red Sox" class="opp-logo">
+            <span class="opp-name">Boston Red Sox</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="drive-toggle" onclick="toggleDrive(this)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v3"/><rect x="9" y="11" width="14" height="10" rx="2"/><circle cx="12" cy="21" r="1"/><circle cx="20" cy="21" r="1"/></svg>
+        Drive Times
+        <span class="drive-chevron">▾</span>
+      </button>
+      <div class="drive-panel">
+        <div class="drive-panel-inner">
+          <div class="drive-leg">
+            <span class="drive-city">Detroit</span>
+            <div class="drive-line"></div>
+            <div class="drive-meta">
+              <span class="drive-time">2 hr 40 min</span>
+              <span class="drive-dist">~170 mi</span>
+            </div>
+            <span class="drive-city">Cleveland</span>
+          </div>
+          <div class="drive-leg">
+            <span class="drive-city">Cleveland</span>
+            <div class="drive-line"></div>
+            <div class="drive-meta">
+              <span class="drive-time">2 hr 20 min</span>
+              <span class="drive-dist">~130 mi</span>
+            </div>
+            <span class="drive-city">Pittsburgh</span>
+          </div>
+          <div class="drive-leg">
+            <span class="drive-city">Detroit</span>
+            <div class="drive-line"></div>
+            <div class="drive-meta">
+              <span class="drive-time">4 hr 30 min</span>
+              <span class="drive-dist">~290 mi</span>
+            </div>
+            <span class="drive-city">Pittsburgh</span>
+          </div>
+        </div>
+      </div>
+
+    </article>
+
+  </main>
+
+
+
+  <script>
+    // ── Scroll reveal ──────────────────────────────────────────────
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ── Drive time toggle ──────────────────────────────────────────
+    function toggleDrive(btn) {
+      const panel = btn.nextElementSibling;
+      const isOpen = panel.classList.contains('open');
+      panel.classList.toggle('open', !isOpen);
+      btn.classList.toggle('open', !isOpen);
+    }
+  </script>
+</body>
+</html>
