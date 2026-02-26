@@ -21,6 +21,7 @@
       --cream:   #F5E6C8;
       --gold:    #D4A843;
       --teal:    #20B2AA;
+      --blue:    #1E7FC2;
       --muted:   rgba(245,230,200,0.5);
     }
 
@@ -80,6 +81,7 @@
     .card-teal   { border-left: 4px solid var(--teal); }
     .card-red    { border-left: 4px solid var(--red); }
     .card-gold   { border-left: 4px solid var(--gold); }
+    .card-blue   { border-left: 4px solid var(--blue); }
 
     /* ─── Card header ──────────────────────────────────── */
     .card-header {
@@ -438,6 +440,14 @@
         0 0 32px rgba(212,168,67,0.08);
     }
 
+    .card-blue:hover {
+      transform: translateY(-8px);
+      box-shadow:
+        0 24px 64px rgba(0,0,0,0.65),
+        0 0 0 1px rgba(30,127,194,0.25),
+        0 0 32px rgba(30,127,194,0.08);
+    }
+
     /* ─── Drive time panel ────────────────────────────── */
     .drive-toggle {
       display: flex;
@@ -554,10 +564,12 @@
       <span class="city-dot">Cleveland</span>
       <span class="city-dot-sep">◆</span>
       <span class="city-dot">Pittsburgh</span>
+      <span class="city-dot-sep">◆</span>
+      <span class="city-dot">Chicago</span>
     </div>
 
     <p class="page-subtitle">
-      Three ballparks. Three cities. One epic summer road trip.<br>
+      Multiple ballparks. Multiple cities. One epic summer road trip.<br>
       Pick the weekend that works.
     </p>
   </header>
@@ -878,6 +890,114 @@
               <span class="drive-dist">~290 mi</span>
             </div>
             <span class="drive-city">Pittsburgh</span>
+          </div>
+        </div>
+      </div>
+
+    </article>
+
+
+    <!-- ─────────────────────────────────────────────────────────
+         OPTION 4 · Chicago Trip · "The Windy City"
+    ────────────────────────────────────────────────────────────── -->
+    <article class="card card-blue reveal" style="transition-delay: 0.5s;">
+
+      <div style="background:linear-gradient(90deg,#0d3a6e 0%,var(--blue) 35%,#5ab0f0 60%,var(--blue) 80%,#0d3a6e 100%); color:#fff; font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:13px; letter-spacing:0.25em; text-align:center; padding:9px 16px; text-transform:uppercase;">
+        🏟 ALL THREE BALLPARKS · 4 DAYS 🏟
+      </div>
+
+      <div class="card-header">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px; margin-bottom:14px; flex-wrap:wrap;">
+          <span class="option-pill" style="background:rgba(30,127,194,0.18); border:1px solid rgba(30,127,194,0.4); color:var(--blue);">Option 4</span>
+          <span class="rare-pill">⭐ Only window all season</span>
+        </div>
+
+        <div class="barlow" style="font-size:38px; font-weight:900; line-height:0.95; color:var(--cream); text-transform:uppercase; letter-spacing:-0.01em; margin-bottom:8px;">
+          Jun 26–Jul 1
+        </div>
+        <div style="font-size:14px; color:rgba(245,230,200,0.5); font-style:italic; margin-bottom:14px;">
+          "The Windy City"
+        </div>
+
+        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+          <span class="chip">4 days</span>
+          <span class="chip">3 parks</span>
+          <span class="chip" style="color:var(--blue); border-color:rgba(30,127,194,0.25);">Milwaukee → Chicago</span>
+        </div>
+      </div>
+
+      <!-- Day 1–2: Milwaukee Brewers -->
+      <div class="city-row">
+        <img src="https://www.mlbstatic.com/team-logos/158.svg" alt="Milwaukee Brewers" class="home-logo">
+        <div class="city-info">
+          <div style="font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--blue); margin-bottom:2px;">Day 1 — Fri Jun 26</div>
+          <div class="city-name">Milwaukee Brewers</div>
+          <div class="venue-name">American Family Field</div>
+          <div class="vs-row">
+            <span class="vs-label">vs</span>
+            <img src="https://www.mlbstatic.com/team-logos/112.svg" alt="Chicago Cubs" class="opp-logo">
+            <span class="opp-name">Chicago Cubs</span>
+          </div>
+          <div class="overlap-note">Cubs are the road team here — follow them home to Wrigley after</div>
+        </div>
+      </div>
+
+      <!-- Day 3: White Sox -->
+      <div class="city-row">
+        <img src="https://www.mlbstatic.com/team-logos/145.svg" alt="Chicago White Sox" class="home-logo">
+        <div class="city-info">
+          <div style="font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--blue); margin-bottom:2px;">Day 3 — Sun Jun 28</div>
+          <div class="city-name">Chicago White Sox</div>
+          <div class="venue-name">Guaranteed Rate Field</div>
+          <div class="vs-row">
+            <span class="vs-label">vs</span>
+            <img src="https://www.mlbstatic.com/team-logos/118.svg" alt="Kansas City Royals" class="opp-logo">
+            <span class="opp-name">Kansas City Royals</span>
+          </div>
+          <div class="overlap-note">Drive 90 min south from Milwaukee — South Side Chicago</div>
+        </div>
+      </div>
+
+      <!-- Day 4: Chicago Cubs at Wrigley -->
+      <div class="city-row">
+        <img src="https://www.mlbstatic.com/team-logos/112.svg" alt="Chicago Cubs" class="home-logo">
+        <div class="city-info">
+          <div style="font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:var(--blue); margin-bottom:2px;">Day 4 — Mon Jun 29</div>
+          <div class="city-name">Chicago Cubs</div>
+          <div class="venue-name">Wrigley Field</div>
+          <div class="vs-row">
+            <span class="vs-label">vs</span>
+            <img src="https://www.mlbstatic.com/team-logos/135.svg" alt="San Diego Padres" class="opp-logo">
+            <span class="opp-name">San Diego Padres</span>
+          </div>
+          <div class="overlap-note">Cubs open their homestand — 30 min from Guaranteed Rate</div>
+        </div>
+      </div>
+
+      <button class="drive-toggle" onclick="toggleDrive(this)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v3"/><rect x="9" y="11" width="14" height="10" rx="2"/><circle cx="12" cy="21" r="1"/><circle cx="20" cy="21" r="1"/></svg>
+        Drive Times
+        <span class="drive-chevron">▾</span>
+      </button>
+      <div class="drive-panel">
+        <div class="drive-panel-inner">
+          <div class="drive-leg">
+            <span class="drive-city">Milwaukee</span>
+            <div class="drive-line"></div>
+            <div class="drive-meta">
+              <span class="drive-time">1 hr 30 min</span>
+              <span class="drive-dist">~90 mi</span>
+            </div>
+            <span class="drive-city">Chicago</span>
+          </div>
+          <div class="drive-leg">
+            <span class="drive-city">Wrigley</span>
+            <div class="drive-line"></div>
+            <div class="drive-meta">
+              <span class="drive-time">~30 min</span>
+              <span class="drive-dist">~10 mi</span>
+            </div>
+            <span class="drive-city">Guaranteed Rate</span>
           </div>
         </div>
       </div>
